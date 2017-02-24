@@ -11,6 +11,7 @@
 
 from random import shuffle
 import matplotlib.pyplot as plt
+import time
 
 ##############################################################################
 # Function to shuffle deck
@@ -56,15 +57,16 @@ n_trials = 1000000
 num_left = []
 n_winners = 0
 
+t_start = time.time()
 for i in xrange(n_trials):
 	deck_down = deck_0[:]
 	shuffle_deck(deck_down, n)
 	deck_up = []
-	
+
 	# Initial four card draw
 	for ii in range(4):
 		draw_card(deck_down, deck_up)
-	
+
 	while len(deck_down) > 0:
 		check_flag = 1
 		while check_flag == 1:
@@ -72,12 +74,12 @@ for i in xrange(n_trials):
 				check_flag = check_cards(deck_up)
 			else:
 				check_flag = 0
-		
+
 		if len(deck_down) > 0:
 			draw_card(deck_down, deck_up)
 		while len(deck_up) < 4 and len(deck_down) > 0:
 			draw_card(deck_down, deck_up)
-	
+
 	if len(deck_up) > 3:
 		check_flag = 1
 		while check_flag == 1:
@@ -85,15 +87,17 @@ for i in xrange(n_trials):
 				check_flag = check_cards(deck_up)
 			else:
 				check_flag = 0
-	
+
 	num_left.append(len(deck_up))
 	if len(deck_up) == 0:
 		n_winners += 1
 
-# Print results of simulation #		
+t_end = time.time()
+
+# Print results of simulation #
 print ''
-print 'Run Completed!'
-print '%i out of %i trials were winners (%.2f%%)' % (n_winners, n_trials, 
+print 'Run Completed in %.4f!' % (t_end - t_start)
+print '%i out of %i trials were winners (%.2f%%)' % (n_winners, n_trials,
 	float(n_winners)/n_trials * 100.)
 print ''
 
